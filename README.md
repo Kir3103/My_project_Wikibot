@@ -1,1 +1,1 @@
-# My_project_Wikibot
+# Telegram bot to search for information on wikipedia
