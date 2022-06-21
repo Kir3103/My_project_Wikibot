@@ -3,7 +3,8 @@ import telebot
 import wikipedia
 
 wikipedia.set_lang('ru')
-bot = telebot.TeleBot('5501860572:AAG2Um4f1T1Zdhg50p_ZfQ_EJRiQGt73wTU')
+with open('Project_MyWIKIbot_token.txt', 'r') as token:
+    bot = telebot.TeleBot(token.read())
 
 
 def get_wiki_information(text):
@@ -12,16 +13,15 @@ def get_wiki_information(text):
     try:
         result_of_search = wikipedia.search(text)
         page_from_wiki = wikipedia.page(result_of_search[0])
-        text_from_wiki = page_from_wiki.content[:1000]
+        text_from_wiki = page_from_wiki.content[:500]
         wiki_message = text_from_wiki.split('.')[:-1]
         wiki_text_result = ''
         for words in wiki_message:
-            if not ('==' in words):
-                if len((words.strip())) > 3:
-                    wiki_text_result = wiki_text_result + words + '.'
+            if '==' not in words:
+                wiki_text_result = wiki_text_result + words + '.'
             else:
                 break
-        wiki_text_result = re.sub('\([^()]*\)', '', wiki_text_result)
+        wiki_text_result = re.sub(r"\([^()]*\)", '', wiki_text_result)
         return f' Вот что мне удалось найти на Wikipedia:\n\n{wiki_text_result}'
     except Exception:
         return 'Ничего не могу найти по Вашему запросу. Возможно Вам нужно найти что-то еще?'
@@ -38,7 +38,7 @@ def start(start_message):
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
-    """Получение сообщения от пользователя."""
+    """Получение и обработка сообщения от пользователя."""
 
     bot.send_message(message.chat.id, get_wiki_information(message.text))
 
