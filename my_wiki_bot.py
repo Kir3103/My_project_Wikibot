@@ -7,7 +7,8 @@ bot = telebot.TeleBot('5501860572:AAG2Um4f1T1Zdhg50p_ZfQ_EJRiQGt73wTU')
 
 
 def get_wiki_information(text):
-    """Функция производит чистку текста из статьи на Wikipedia"""
+    """Функция производит поиск термина на Wikipedia и подготовку текста для вывода пользователю."""
+
     try:
         result_of_search = wikipedia.search(text)
         page_from_wiki = wikipedia.page(result_of_search[0])
@@ -28,6 +29,8 @@ def get_wiki_information(text):
 
 @bot.message_handler(commands=['start'])
 def start(start_message):
+    """Обработка команды /start."""
+
     bot.send_message(start_message.chat.id,
                      'Привет, это wiki-bot 👨🏻‍💻\nОтправьте мне интересующее слово, '
                      'и я попробую найти информацию по нему на Wikipedia')
@@ -35,7 +38,9 @@ def start(start_message):
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
+    """Получение сообщения от пользователя."""
+
     bot.send_message(message.chat.id, get_wiki_information(message.text))
 
 
-bot.polling(none_stop=True, interval=0)
+bot.polling(none_stop=True, interval=0)  # Запуск бота.
