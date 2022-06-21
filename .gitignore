@@ -3,3 +3,4 @@
 /.idea/
 
 Project_MyWIKIbot_token.txt
+tests/test_my_wiki_bot.py
